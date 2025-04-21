@@ -1,0 +1,6 @@
+torch>=1.10
+transformers>=4.26
+accelerate>=0.12
+huggingface_hub>=0.13
+
+huggingface_hub get access to gemma-2b and Meta-Llama-3 repos
