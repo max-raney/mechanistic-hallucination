@@ -5,19 +5,20 @@ import matplotlib.pyplot as plt
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from torch.cuda.amp import autocast
 
-def benchmark_model(model_id, input_prompt="Hello, my name is"):
+# To introduce the models and test their performances
+def benchmark_model(model_id, input_prompt="Hello, my name is"):  # For example
     print(f"\n--- Benchmarking {model_id} ---")
 
     # Load model
     t0 = time.time()
+    tk = "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"  # Created by RY
     tokenizer = AutoTokenizer.from_pretrained(model_id,
-                                             token = "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")
+                                             token = tk)
     model = AutoModelForCausalLM.from_pretrained(
         model_id,
         torch_dtype=torch.float16,
         device_map="auto",
-        token = "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"
-    )
+        token = tk)
     torch.cuda.synchronize()
     t1 = time.time()
     load_time = t1 - t0
@@ -46,12 +47,7 @@ def benchmark_model(model_id, input_prompt="Hello, my name is"):
     tokens_per_sec = tokens_generated / inference_time
 
     peak_mem = torch.cuda.max_memory_allocated() / (1024 ** 3)  # in GB
-
     decode = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    print(f"Load time: {load_time:.2f}s")
-    print(f"Peak GPU memory: {peak_mem:.2f} GB")
-    print(f"Inference time: {inference_time:.2f}s")
-    print(f"Tokens/sec: {tokens_per_sec:.2f}")
 
     return {
         "model_id": model_id,
