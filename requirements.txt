@@ -1,0 +1,22 @@
+# Core deep learning
+torch>=2.0.0
+transformers>=4.30.0
+
+# Mechanistic interpretability
+transformer_lens>=0.0.9
+captum>=0.5.0
+
+# Data handling & analysis
+numpy>=1.24.0
+pandas>=2.0.0
+scikit-learn>=1.2.0
+umap-learn>=0.5.4
+
+# Datasets & utilities
+python-dotenv>=1.0.0
+datasets>=2.13.0
+tqdm>=4.65.0
+huggingface-hub>=0.17.0
+
+# Visualization
+matplotlib>=3.7.0
