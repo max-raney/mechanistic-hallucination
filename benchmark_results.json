@@ -1,0 +1,18 @@
+[
+  {
+    "model_id": "google/gemma-2b",
+    "load_time_sec": 6.777771949768066,
+    "inference_time_sec": 1.474670648574829,
+    "peak_memory_gb": 4.679380416870117,
+    "tokens_per_sec": 33.90587589732098,
+    "output_text": "Hello, my name is <strong><em><u>Aisha</u></em></strong> and I am a <strong><em><u>Certified Life Coach</u></em></strong>. I am here to help you <strong><em><u>achieve your goals</u></em></strong> and <strong><em><u>live a happier life</u>"
+  },
+  {
+    "model_id": "meta-llama/Meta-Llama-3-8B",
+    "load_time_sec": 17.385825872421265,
+    "inference_time_sec": 58.570160150527954,
+    "peak_memory_gb": 14.973537921905518,
+    "tokens_per_sec": 0.8536770237864767,
+    "output_text": "Hello, my name is and I'm writing you today to learn more about the 2019 Chevrolet Silverado 1500 LTZ Crew Cab 4WD. I live at in the area and I would like to hear back from you soon and learn more about this vehicle"
+  }
+]
