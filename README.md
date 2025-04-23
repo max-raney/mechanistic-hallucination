@@ -13,7 +13,7 @@ A replication and extension of CTGT’s feature-level interventions for censorsh
 
 ---
 
-## 🚀 Quickstart
+## Quickstart
 
 1. **Clone & enter**  
    ```bash
@@ -24,81 +24,77 @@ A replication and extension of CTGT’s feature-level interventions for censorsh
 2. **Create & activate virtualenv**  
    ```bash
    python3 -m venv .venv
-   source .venv/bin/activate    # Linux / macOS
-   .venv\Scripts\activate     # Windows PowerShell
+   source .venv/bin/activate      # Linux / macOS
+   .venv\Scripts\activate         # Windows PowerShell
    ```
 
-3. **Install Python dependencies**  
+3. **Install dependencies**  
    ```bash
    pip install -r requirements.txt
    ```
 
 4. **Install CUDA-enabled PyTorch**  
-   Depending on your GPU and driver, pick the matching CUDA version:
-
-   - **pip** (example for CUDA 11.8):
+   - **pip** (CUDA 11.8 example)  
      ```bash
      pip uninstall -y torch torchvision torchaudio
      pip install torch torchvision torchaudio \
        --index-url https://download.pytorch.org/whl/cu118
-     ```
-
-   - **conda** (example for CUDA 11.8):
+     ```  
+   - **conda** (CUDA 11.8 example)  
      ```bash
      conda install pytorch torchvision torchaudio pytorch-cuda=11.8 \
        -c pytorch -c nvidia
      ```
 
-5. **Install this package in editable mode**  
+5. **Install in editable mode**  
    ```bash
    pip install -e .
    ```
 
 ---
 
-## 🔑 Model Access
+## Model Access
 
-This project uses private/open-weight models from Hugging Face. You’ll need a **read**-scoped token:
-
-1. Sign in at https://huggingface.co → **Settings → Access Tokens** → **New token**  
-2. Name it, select **read** scope, and **Generate** → **Copy** the resulting `hf_…` string  
-3. In your project root:
+1. Go to https://huggingface.co → **Settings → Access Tokens** → **New token**  
+2. Name it, select **read** scope, **Generate**, copy the `hf_…` string  
+3. In project root:  
    ```bash
    cp .env.example .env
-   ```
-   Then open `.env` and set:
+   ```  
+   Edit `.env` to include:  
    ```
    HF_TOKEN=hf_<your-token-here>
    ```
 
 ---
 
-## ⚙️ Usage
-
-Once your `.env` is configured and the package is installed, run:
+## Benchmark Usage
 
 ```bash
-# Run via Python module
-python -m mechanistic_interventions.evaluation.benchmark
-
-# Or, if you defined a console script 'bench' in setup.py:
-bench
+python -m mechanistic_interventions.evaluation.benchmark \
+  [--models MODEL_ID [MODEL_ID ...]] \
+  [--prompt "Your prompt"] \
+  [--output PATH/TO/results.json]
 ```
 
-This will output JSON containing:
+- `--models`: list of HF model IDs (default: `google/gemma-2b meta-llama/Meta-Llama-3-8B`)  
+- `--prompt`: text prompt (default: `"Hello, my name is"`)  
+- `--output`: output JSON file path (default: `benchmark_results.json`)  
 
-- `model_id`  
-- `load_time_sec`  
-- `inference_time_sec`  
-- `peak_memory_gb`  
-- `tokens_per_sec`  
-- `output_text`  
+### Quick-exit (CI/tests)
+
+```bash
+export MECH_QUICK=1      # Linux/macOS/Git Bash
+$Env:MECH_QUICK = '1'    # Windows PowerShell
+set MECH_QUICK=1         # Windows CMD
+
+python -m mechanistic_interventions.evaluation.benchmark
+# prints: []
+```
 
 ---
 
 ## 🧪 Testing
-
-We use pytest for unit tests. To verify everything works:
 
 ```bash
 pytest -q
