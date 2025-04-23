@@ -1,0 +1,11 @@
+--- Benchmarking google/gemma-2b ---
+Load time: 7.68s
+Peak GPU memory: 4.67 GB
+Inference time: 410.21s
+Tokens/sec: 0.12
+
+--- Benchmarking meta-llama/Meta-Llama-3-8B ---
+Load time: 885.59s
+Peak GPU memory: 4.67 GB
+Inference time: 1325.28s
+Tokens/sec: 0.04
