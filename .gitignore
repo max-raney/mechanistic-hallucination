@@ -24,7 +24,7 @@ env/
 # Model checkpoints and data
 models/
 checkpoints/
-data/
+# data/
 outputs/
 
 # IDE/editor settings
