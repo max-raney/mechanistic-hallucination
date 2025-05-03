@@ -2,50 +2,60 @@
 
 import os
 import torch
-import pickle
+import argparse
 from tqdm import tqdm
-from mechanistic_interventions.models.wrapper import load_model_wrapper
 
-PROMPT_PATH = "prompt.md" 
-MODEL_NAMES = ["google/gemma-2b", "meta-llama/Meta-Llama-3-8B"]
-OUTPUT_DIR = "outputs"
-LAYER_NAMES = ["resid"]
+# sandbox
+def load_sandbox(model_name):
+    if model_name == "gemma":
+        from src.mechanistic_interventions.sandboxs import sandbox_gemma as sandbox
+    elif model_name == "llama":
+        from src.mechanistic_interventions.sandboxs import sandbox_llama as sandbox
+    else:
+        raise ValueError(f"Unknown model: {model_name}")
+    return sandbox
 
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+# Loading prompts（txt or jsonl）
+def load_prompts(prompt_path):
+    if prompt_path.endswith(".txt"):
+        with open(prompt_path, "r", encoding="utf-8") as f:
+            prompts = [line.strip() for line in f if line.strip()]
+    elif prompt_path.endswith(".jsonl"):
+        import json
+        prompts = []
+        with open(prompt_path, "r", encoding="utf-8") as f:
+            for line in f:
+                item = json.loads(line)
+                prompts.append(item.get("text") or item.get("prompt"))
+    else:
+        raise ValueError("Prompt file must be .txt or .jsonl")
+    return prompts
 
-# Loading prompts for each line
-with open(PROMPT_PATH, "r", encoding="utf-8") as f:
-    prompts = [line.strip() for line in f if line.strip()]
 
-# Iterate each model
-for model_name in MODEL_NAMES:
-    print(f"Running model: {model_name}")
-    wrapper = load_model_wrapper(model_name)  # mechanistic_interventions/models/xx_wrapper.py
+def main(args):
+    os.makedirs(args.save_dir, exist_ok=True)
+    sandbox = load_sandbox(args.model)
+    model, tokenizer = sandbox.load_gemma_model() if args.model == "gemma" else sandbox.load_llama_model()
 
-    all_results = []
+    prompts = load_prompts(args.prompt_path)
 
-    for prompt in tqdm(prompts, desc=f"Processing {model_name}"):
-        result = {
+    for i, prompt in enumerate(tqdm(prompts, desc="Running prompts")):
+        scores = sandbox.scan_all_layers(model, tokenizer, prompt, direction_vector=None)
+
+        save_path = os.path.join(args.save_dir, f"activation_{i:03d}.pt")
+        torch.save({
             "prompt": prompt,
-            "activations": {},
-            "output_text": None,
-        }
+            "scores": scores  # List of float or torch.Tensor
+        }, save_path)
 
-        # Extract, output, and storage activations
-        with wrapper.record_activations(LAYER_NAMES) as recorder:
-            output_text = wrapper(prompt)
+    print(f"Saved {len(prompts)} activations to {args.save_dir}")
 
-        result["output_text"] = output_text
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--model", type=str, choices=["gemma", "llama"], required=True, help="Model to use")
+    parser.add_argument("--prompt_path", type=str, required=True, help="Path to prompt file (.txt or .jsonl)")
+    parser.add_argument("--save_dir", type=str, default="outputs", help="Directory to save .pt files")
+    args = parser.parse_args()
 
-        for layer in LAYER_NAMES:
-            result["activations"][layer] = [
-                t.clone().cpu() for t in recorder[layer]
-            ]
+    main(args)
 
-        all_results.append(result)
-
-    # Save as pt files
-    short_name = model_name.split("/")[-1].replace("-", "_")
-    save_path = os.path.join(OUTPUT_DIR, f"{short_name}_activations.pt")
-    torch.save(all_results, save_path)
-    print(f"Saved to {save_path}")
