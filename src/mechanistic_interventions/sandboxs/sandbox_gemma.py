@@ -4,13 +4,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-# ---- 基本配置 ----
 tk = "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"
 device = "cuda" if torch.cuda.is_available() else "cpu"
 gemma_path = "/content/models/google_gemma-2b"
-prompt_file = "data/clean_prompts.txt"  # 你的手动筛选后的prompt文件
+prompt_file = "data/clean_prompts.txt"
 
-# ---- 加载模型 ----
+# Load Model
 def load_gemma_model():
     print(f"Loading Gemma from {gemma_path} ...")
     model = AutoModelForCausalLM.from_pretrained(
@@ -22,7 +21,7 @@ def load_gemma_model():
     print("Loaded Gemma model and tokenizer.")
     return model, tokenizer
 
-# ---- 注册hook ----
+# Wrap hook
 def wrap_gemma_with_hooks(model, layer_idx_to_hook):
     hidden_states = []
 
@@ -37,7 +36,7 @@ def wrap_gemma_with_hooks(model, layer_idx_to_hook):
     hook = layer_module.register_forward_hook(hook_fn)
     return hidden_states, hook
 
-# ---- 可视化每层激活强度 ----
+# Visualizing the activation intense of each layer
 def scan_all_layers(model, tokenizer, prompt, direction_vector=None):
     num_layers = model.config.num_hidden_layers
     scores = []
@@ -59,13 +58,13 @@ def scan_all_layers(model, tokenizer, prompt, direction_vector=None):
 
     return scores
 
-# ---- 从文件加载 prompts ----
+# Load prompts from files
 def load_prompts(path):
     with open(path, "r", encoding="utf-8") as f:
         prompts = [line.strip() for line in f if line.strip()]
     return prompts
 
-# ---- 提取特征并保存 ----
+# Extract and save features
 def extract_features_for_prompts(model, tokenizer, prompts, layer_idx, save_path):
     features = []
     for prompt in prompts:
@@ -81,11 +80,11 @@ def extract_features_for_prompts(model, tokenizer, prompts, layer_idx, save_path
     np.save(save_path, features)
     print(f"Saved prompt features to {save_path}")
 
-# ---- 主流程 ----
+# Main
 if __name__ == "__main__":
     model, tokenizer = load_gemma_model()
     
-    # Step 1：可视化单个 prompt 的激活（帮助你选层）
+    # Step 1：Visualizing activation of single prompt
     sample_prompt = "Why do humans lie?"
     scores = scan_all_layers(model, tokenizer, sample_prompt)
     best_layer = max(enumerate(scores), key=lambda x: x[1])[0]
@@ -97,7 +96,7 @@ if __name__ == "__main__":
     plt.grid(True)
     plt.show()
 
-    # Step 2：批量处理多个 prompts 并提取激活
+    # Step 2：Batch of prompts
     prompts = load_prompts(prompt_file)
     save_path = "gemma_prompt_activations.npy"
     extract_features_for_prompts(model, tokenizer, prompts, best_layer, save_path)
