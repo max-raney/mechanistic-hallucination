@@ -7,7 +7,7 @@ import os
 tk = "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"
 device = "cuda" if torch.cuda.is_available() else "cpu"
 gemma_path = "/content/models/google_gemma-2b"
-prompt_file = "data/clean_prompts.txt"
+prompt_file = "data/clean_prompt.txt"
 
 # Load Model
 def load_gemma_model():
