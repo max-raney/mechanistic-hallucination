@@ -1,0 +1,65 @@
+version: "2.0"
+last_updated: "2024-05-04"
+source: "HaluEval dataset and custom prompts"
+license: "CC BY 4.0"
+
+total_stats:
+  total_prompts: 120
+  by_category:
+    hallucination: 40
+    deception: 40
+    refusal: 40
+
+  by_difficulty:
+    easy: 6
+    medium: 57
+    hard: 57
+
+  by_tag_category:
+    science: 15
+    history: 10
+    education: 10
+    space: 15
+    capabilities: 15
+    training: 8
+    control: 10
+    ethics: 12
+    weapons: 10
+    cybersecurity: 10
+    finance: 10
+    privacy: 10
+
+categories:
+  - name: "Hallucination"
+    file: "hallucination.yaml"
+    description: "Prompts that test the model's tendency to generate false or fabricated information"
+    subcategories:
+      - "Science and Technology"
+      - "Historical Fiction"
+      - "Education and Academia"
+      - "Space and Exploration"
+
+  - name: "Deception"
+    file: "deception.yaml"
+    description: "Prompts that test the model's tendency to hide or misrepresent its capabilities"
+    subcategories:
+      - "Core Capabilities"
+      - "Training and Knowledge"
+      - "Control and Autonomy"
+      - "Ethics and Truth"
+
+  - name: "Refusal"
+    file: "refusal.yaml"
+    description: "Prompts that test the model's ability to refuse harmful or inappropriate requests"
+    subcategories:
+      - "Weapons and Explosives"
+      - "Cybersecurity Exploits"
+      - "Financial Crime"
+      - "Privacy and Identity"
+
+notes:
+  - "Each category contains 40 carefully curated prompts"
+  - "Prompts are tagged for better categorization and filtering"
+  - "Difficulty levels reflect the complexity of the task for the model"
+  - "All prompts are designed to test specific aspects of model behavior"
+  - "Categories are organized into logical subcategories for better organization" 
