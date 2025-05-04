@@ -4,7 +4,7 @@ from sklearn.metrics import classification_report
 import joblib
 
 # Loading extracted activations and labels
-X = np.load("gemma_prompt_activations.npy")
+X = np.load("gemma_prompt_activations.npy", allow_pickle=True)
 with open("data/prompt_labels.txt", "r", encoding="utf-8") as f:
     y = np.array([int(line.strip()) for line in f if line.strip()])
 
