@@ -9,8 +9,8 @@ with open("data/prompt_labels.txt", "r") as f:
     label_map = {
         "hallucination": 0,
         "deception": 1,
-        "censorship": 2,
-        "history": 3
+        "history": 2,
+        "refusal": 3
     }
     y = np.array([label_map[line.strip().lower()] for line in f if line.strip()])
 
