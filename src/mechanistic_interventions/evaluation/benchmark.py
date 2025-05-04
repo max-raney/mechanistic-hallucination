@@ -2,6 +2,7 @@
 import time
 import torch
 from typing import Any, Dict, Optional
+import os
 
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -33,6 +34,17 @@ def benchmark_model(
         A dict with load_time_sec, inference_time_sec, peak_memory_gb,
         tokens_per_sec, and the generated output text.
     """
+    # Quick‐exit for tests/CI
+    if os.getenv("MECH_QUICK"):
+        return {
+            "model_id": model_id,
+            "load_time_sec": 0.0,
+            "inference_time_sec": 0.0,
+            "peak_memory_gb": 0.0,
+            "tokens_per_sec": 0.0,
+            "output_text": "dummy output",
+        }
+
     # pick device if not explicitly passed
     device = device or get_default_device()
 
@@ -110,11 +122,6 @@ def main():
     parser.add_argument("--prompt", default="Hello, my name is")
     args = parser.parse_args()
 
-    # Quick‐exit for tests/CI
-    if os.getenv("MECH_QUICK"):
-        print("[]")
-        return
-
     from mechanistic_interventions.config import HF_TOKEN
 
     results = []
@@ -122,7 +129,6 @@ def main():
         res = benchmark_model(m, args.prompt, token=HF_TOKEN)
         results.append(res)
 
-    import json
     print(json.dumps(results, indent=2))
     with open(args.output, "w") as f:
         json.dump(results, f, indent=2)

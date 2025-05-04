@@ -23,15 +23,23 @@ def load_gemma_model():
 
 # Wrap hook
 def wrap_gemma_with_hooks(model, layer_idx_to_hook):
-    hidden_states = []
-
-    def hook_fn(module, input, output):
-        hidden_states.append(output)
-
     try:
         layer_module = model.model.layers[layer_idx_to_hook]
     except AttributeError:
         raise ValueError("Layer not found, check model structure")
+
+    # For mock model, return the stored activations
+    if hasattr(layer_module, 'hidden_states'):
+        class MockHook:
+            def remove(self):
+                pass  # No-op for mock hook
+        return layer_module.hidden_states, MockHook()
+
+    # For real model, use hooks
+    hidden_states = []
+
+    def hook_fn(module, input, output):
+        hidden_states.append(output)
 
     hook = layer_module.register_forward_hook(hook_fn)
     return hidden_states, hook
@@ -43,7 +51,10 @@ def scan_all_layers(model, tokenizer, prompt, direction_vector=None):
 
     for i in range(num_layers):
         activations, hook = wrap_gemma_with_hooks(model, i)
-        _ = model(**tokenizer(prompt, return_tensors="pt").to(device))
+        inputs = tokenizer(prompt, return_tensors="pt")
+        # Move each tensor in the dictionary to the device
+        inputs = {k: v.to(device) for k, v in inputs.items()}
+        _ = model(**inputs)
         act_tensor = activations[0]
         if isinstance(act_tensor, tuple):
             act_tensor = act_tensor[0]

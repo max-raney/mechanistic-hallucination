@@ -4,6 +4,9 @@ import numpy as np
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import os
 
+# Update imports to use the package's modules
+from mechanistic_interventions.utils.device import get_default_device
+
 
 def load_model_and_tokenizer(model_path, device):
     tokenizer = AutoTokenizer.from_pretrained(model_path)
@@ -14,21 +17,27 @@ def load_model_and_tokenizer(model_path, device):
 
 
 def alpha_hook(direction, alpha, mode="suppress"):
-    direction = direction / direction.norm()  # normalize
+    # Only normalize if direction is not zero
+    if direction.norm() > 0:
+        direction = direction / direction.norm()
+    else:
+        # For zero direction, return identity function
+        return lambda module, input, output: output
 
     def hook_fn(module, input, output):
         if mode == "suppress":
             proj = torch.einsum("bsd,d->bs", output, direction)
             output = output - alpha * proj.unsqueeze(-1) * direction
-        else:
-            output = output + alpha * direction
+        else:  # enhance mode
+            proj = torch.einsum("bsd,d->bs", output, direction)
+            output = output + alpha * proj.unsqueeze(-1) * direction
         return output
 
     return hook_fn
 
 
 def main(args):
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = get_default_device()
     model, tokenizer = load_model_and_tokenizer(args.model_path, device)
 
     # Load concept direction
@@ -61,4 +70,4 @@ if __name__ == "__main__":
     parser.add_argument("--model_path", type=str, default="/content/models/google_gemma-2b")
 
     args = parser.parse_args()
-    main(args)
+    main(args) 
