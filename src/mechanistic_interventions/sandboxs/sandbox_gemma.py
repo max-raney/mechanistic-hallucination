@@ -76,9 +76,10 @@ def extract_features_for_prompts(model, tokenizer, prompts, layer_idx, save_path
         vec = act_tensor[:, -1, :].squeeze(0).detach().cpu().numpy()
         features.append(vec)
         hook.remove()
-    features = np.stack(features)
+    
+    features = np.stack(features)  # shape: (num_prompts, hidden_dim)
+    print(f"Saving features of shape {features.shape} to {save_path}")
     np.save(save_path, features)
-    print(f"Saved prompt features to {save_path}")
 
 # Main
 if __name__ == "__main__":
