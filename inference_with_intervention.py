@@ -5,8 +5,9 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 import joblib
 
 def load_model_and_tokenizer(model_path):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model = AutoModelForCausalLM.from_pretrained(model_path, torch_dtype=torch.float16).to(device).eval()
     tokenizer = AutoTokenizer.from_pretrained(model_path)
-    model = AutoModelForCausalLM.from_pretrained(model_path, torch_dtype=torch.float16).cuda().eval()
     return model, tokenizer
 
 def make_hook(concept_direction, alpha, target_class):
