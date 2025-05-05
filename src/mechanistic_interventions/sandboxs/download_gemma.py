@@ -5,16 +5,14 @@ import os
 
 # The ids are the name of the HuggingFace repos
 model1 = "google/gemma-2b"
-model2 = "meta-llama/Meta-Llama-3-8B"
 tk = "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"  # Created by RY
 
 # Download to the Colab, not in the local computer
-for model in [model1, model2]:
-  save_path = f"/content/models/{model.replace('/', '_')}"
-  local_dir = snapshot_download(
-      token = tk,
-      repo_id=model,
-      repo_type="model",
-      local_dir=save_path
-  )
-  print(f"Model downloaded to: {local_dir}")
+save_path = f"/content/models/{model1.replace('/', '_')}"
+local_dir = snapshot_download(
+    token = tk,
+    repo_id=model1,
+    repo_type="model",
+    local_dir=save_path
+)
+print(f"Model downloaded to: {local_dir}")
