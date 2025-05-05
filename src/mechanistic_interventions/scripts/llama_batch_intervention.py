@@ -44,11 +44,13 @@ def load_prompts_labels(p_path, l_path):
 
 
 def alpha_hook(vec, alpha, mode):
-    vec = vec / vec.norm()
-
     def hook(_, __, out):
-        return out - alpha * (out @ vec).unsqueeze(-1) * vec if mode == "suppress" else out + alpha * vec
-
+        v = vec.to(out.dtype).to(out.device)      
+        if mode == "suppress":
+            proj = torch.einsum("bsd,d->bs", out, v)
+            return out - alpha * proj.unsqueeze(-1) * v
+        else:
+            return out + alpha * v
     return hook
 
 
