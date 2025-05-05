@@ -1,37 +1,27 @@
-import torch
 import numpy as np
-from transformers import AutoTokenizer, AutoModelForCausalLM
-import os
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import classification_report
+import joblib
 
-# Update imports to use the package's modules
-from mechanistic_interventions.utils.device import get_default_device
+# Loading extracted activations and labels
+X = np.load("gemma_prompt_activations.npy")
+label_map = {"hallucination": 0, "deception": 1, "history": 2, "refusal": 3}
+with open("data/prompt_labels.txt", "r") as f:
+    y = np.array([label_map[line.strip().lower()] for line in f if line.strip()])
 
+assert len(X) == len(y), "# of activations and labels are not corr."
 
-def load_model_and_tokenizer(model_path, device):
-    tokenizer = AutoTokenizer.from_pretrained(model_path)
-    model = AutoModelForCausalLM.from_pretrained(model_path,
-                                                 torch_dtype=torch.float16 if device == "cuda" else torch.float32)
-    model = model.to(device).eval()
-    return model, tokenizer
+# Train and test
+from sklearn.model_selection import train_test_split
 
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-def train_concept_vectors(model, tokenizer, prompts, labels, device):
-    # Placeholder for training concept vectors
-    # This function should be implemented based on your specific training logic
-    pass
+# Train LR (also ok with MLP)
+clf = LogisticRegression(max_iter=1000)
+clf.fit(X_train, y_train)
+y_pred = clf.predict(X_test)
+print("Analysis：")
+print(classification_report(y_test, y_pred))
 
-
-def main():
-    device = get_default_device()
-    model_path = "/content/models/google_gemma-2b"
-    model, tokenizer = load_model_and_tokenizer(model_path, device)
-
-    # Load prompts and labels
-    prompts = ["prompt1", "prompt2"]  # Replace with actual prompts
-    labels = ["label1", "label2"]  # Replace with actual labels
-
-    train_concept_vectors(model, tokenizer, prompts, labels, device)
-
-
-if __name__ == "__main__":
-    main() 
+joblib.dump(clf, "gemma_concept_vector_clf.pkl")
+print("Saved as gemma_concept_vector_clf.pkl")
