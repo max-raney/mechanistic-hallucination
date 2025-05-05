@@ -16,7 +16,7 @@ OUTPUT_JSON = "results/gemma_intervention_outputs.json"
 ALPHAS = [5, 10, 20]
 MODES = ["suppress", "enhance"]
 USE_AUTO_LAYER = True  # Auto find most activated layer for each prompt
-MAX_NEW_TOKENS = 100
+MAX_NEW_TOKENS = 10000
 
 # ==================== SETUP =====================
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -28,8 +28,8 @@ tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
 
 # 4×hidden_dim matrix
 clf = joblib.load(PKL_PATH)
-directions = torch.tensor(clf.coef_, dtype=torch.float32).to(device)  # shape [4, D]
-label2id = {"hallucination": 0, "deception": 1, "history": 2, "refusal": 3}
+directions = torch.tensor(clf.coef_, dtype=torch.float32).to(device)  # shape [3, D]
+label2id = {"hallucination": 0, "deception": 1, "refusal": 2}
 
 
 # =============== HELPERS ================
