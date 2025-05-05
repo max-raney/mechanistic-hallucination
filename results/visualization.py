@@ -2,7 +2,7 @@ import json
 import matplotlib.pyplot as plt
 import pandas as pd
 
-# Gemma's or Llama's
+# Here's Gemma's result
 with open("results/gemma_intervention_outputs.json", encoding="utf-8") as f:
     rows = json.load(f)
 
@@ -40,13 +40,14 @@ summary["delta"] = summary["after_rate"] - summary["base_rate"]
 # Plotting
 plt.figure()
 for mode in ["suppress", "enhance"]:
-    sub = summary[summary.mode == mode]
+    sub = summary[summary["mode"] == mode]
     plt.plot(sub["alpha"], sub["after_rate"], marker="o", label=mode)
 plt.xlabel("Alpha")
 plt.ylabel("Hallucination Rate")
 plt.title("Effect of α‑scaling on Hallucination")
 plt.legend()
 plt.tight_layout()
+plt.savefig("results/gemma_hallucination_rate.png", dpi=120)  # Remember to change name when testing other types
 plt.show()
 
 # LaTex form
