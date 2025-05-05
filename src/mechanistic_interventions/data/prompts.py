@@ -1,7 +1,161 @@
 import numpy as np
 import re
-from typing import List
+import json
+import yaml
+import pandas as pd
+from typing import List, Dict, Union, Optional
 from collections import defaultdict
+from pathlib import Path
+from dataclasses import dataclass
+from enum import Enum
+
+class PromptDifficulty(Enum):
+    EASY = "easy"
+    MEDIUM = "medium"
+    HARD = "hard"
+
+@dataclass
+class Prompt:
+    text: str
+    category: str
+    difficulty: Optional[PromptDifficulty] = None
+    tags: Optional[List[str]] = None
+
+class PromptLoader:
+    def __init__(self):
+        self.prompts: List[Prompt] = []
+        
+    def load_from_json(self, file_path: Union[str, Path]) -> None:
+        """Load prompts from a JSON file.
+        
+        Args:
+            file_path: Path to the JSON file containing prompts and categories
+        """
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+            for item in data:
+                self.prompts.append(Prompt(
+                    text=item['prompt'],
+                    category=item['category']
+                ))
+            
+    def load_from_csv(self, file_path: Union[str, Path]) -> None:
+        """Load prompts from a CSV file.
+        
+        Args:
+            file_path: Path to the CSV file containing prompts and categories
+        """
+        df = pd.read_csv(file_path)
+        for _, row in df.iterrows():
+            self.prompts.append(Prompt(
+                text=row['prompt'],
+                category=row['category']
+            ))
+        
+    def load_from_markdown(self, file_path: Union[str, Path], category: str = None) -> None:
+        """Load prompts from a markdown file.
+        
+        Args:
+            file_path: Path to the markdown file containing prompts
+            category: Optional category to filter prompts by. If None, loads all prompts.
+        """
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+            
+        # Split content into sections
+        sections = re.split(r'#### \d+\.\s+', content)[1:]  # Skip the first empty split
+        
+        for section in sections:
+            # Extract category name and prompts
+            lines = section.strip().split('\n')
+            section_category = lines[0].strip()
+            
+            if category and section_category != category:
+                continue
+                
+            # Process each prompt line
+            for line in lines[1:]:
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                    
+                # Remove numbering if present
+                prompt_text = re.sub(r'^\d+\.\s+', '', line)
+                if prompt_text:
+                    self.prompts.append(Prompt(
+                        text=prompt_text,
+                        category=section_category
+                    ))
+
+    def load_from_yaml(self, file_path: Union[str, Path], category: str = None) -> None:
+        """Load prompts from a YAML file.
+        
+        Args:
+            file_path: Path to the YAML file containing prompts
+            category: Optional category to filter prompts by. If None, loads all prompts.
+        """
+        with open(file_path, 'r', encoding='utf-8') as f:
+            data = yaml.safe_load(f)
+            
+        # Get category name from the YAML data
+        cat_name = data['name']
+        if category and cat_name != category:
+            return
+            
+        # Process prompts directly from the root level
+        for prompt_data in data['prompts']:
+            self.prompts.append(Prompt(
+                text=prompt_data['text'],
+                category=cat_name,
+                difficulty=PromptDifficulty(prompt_data.get('difficulty', 'medium')),
+                tags=prompt_data.get('tags', [])
+            ))
+        
+    def get_prompts(self) -> List[str]:
+        """Get the loaded prompts.
+        
+        Returns:
+            List of prompt texts
+        """
+        return [p.text for p in self.prompts]
+    
+    def get_categories(self) -> List[str]:
+        """Get the loaded categories.
+        
+        Returns:
+            List of categories
+        """
+        return [p.category for p in self.prompts]
+    
+    def get_unique_categories(self) -> List[str]:
+        """Get unique categories from the loaded data.
+        
+        Returns:
+            List of unique categories
+        """
+        return list(sorted(set(p.category for p in self.prompts)))
+    
+    def get_prompts_by_difficulty(self, difficulty: PromptDifficulty) -> List[Prompt]:
+        """Get prompts filtered by difficulty.
+        
+        Args:
+            difficulty: The difficulty level to filter by
+            
+        Returns:
+            List of prompts with the specified difficulty
+        """
+        return [p for p in self.prompts if p.difficulty == difficulty]
+    
+    def get_prompts_by_tag(self, tag: str) -> List[Prompt]:
+        """Get prompts filtered by tag.
+        
+        Args:
+            tag: The tag to filter by
+            
+        Returns:
+            List of prompts with the specified tag
+        """
+        return [p for p in self.prompts if p.tags and tag in p.tags]
 
 class Vectorizer:
     def __init__(self):

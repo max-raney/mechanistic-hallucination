@@ -26,6 +26,13 @@ models/
 checkpoints/
 # data/
 outputs/
+analysis
+
+# Generated direction vectors and results
+direction_vectors/*.pt
+direction_vectors/*.npy
+test_results.json
+benchmark_results.json
 
 # IDE/editor settings
 .vscode/
