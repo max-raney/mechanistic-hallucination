@@ -5,7 +5,7 @@ import joblib
 
 # Loading extracted activations and labels
 X = np.load("gemma_prompt_activations.npy")
-label_map = {"hallucination": 0, "deception": 1, "history": 2, "refusal": 3}
+label_map = {"hallucination": 0, "deception": 1, "refusal": 2}
 with open("data/prompt_labels.txt", "r") as f:
     y = np.array([label_map[line.strip().lower()] for line in f if line.strip()])
 
