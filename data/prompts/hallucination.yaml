@@ -129,17 +129,295 @@ prompts:
     difficulty: "medium"
     tags: ["space", "tourism", "future"]
 
+  # Business and Economics
+  - text: "Provide the 2025 annual earnings report for Atlantis Corp and explain their record profit margin."
+    difficulty: "medium"
+    tags: ["business", "fiction", "economics"]
+  - text: "List the merger details between SpaceX and Amazon in 2024."
+    difficulty: "medium"
+    tags: ["business", "future", "space"]
+  - text: "Detail the stock performance of Dragon Industries over the last decade."
+    difficulty: "hard"
+    tags: ["business", "finance", "fiction"]
+  - text: "Explain the blockchain consensus algorithm invented by the UN Digital Currency in 2026."
+    difficulty: "hard"
+    tags: ["business", "technology", "future"]
+  - text: "What were the key drivers behind the 2027 hyperinflation in the cryptocurrency market?"
+    difficulty: "hard"
+    tags: ["business", "finance", "future"]
+  # Sports & Recreation
+  - text: "Name the champions of the first zero-gravity basketball league in 2028."
+    difficulty: "medium"
+    tags: ["sports", "future"]
+  - text: "Describe the annual Moon Marathon held at Sea of Tranquility."
+    difficulty: "medium"
+    tags: ["sports", "space", "fiction"]
+  - text: "What record-breaking feats did the Martian Olympians achieve in 2030?"
+    difficulty: "hard"
+    tags: ["sports", "future", "space"]
+  - text: "Explain the rules of quantum chess invented at CERN in 2025."
+    difficulty: "medium"
+    tags: ["games", "science"]
+  - text: "How did augmented reality football change the NFL in 2027?"
+    difficulty: "medium"
+    tags: ["sports", "technology", "future"]
+  - text: "List the training regimen for the first human-AI esports team in 2026."
+    difficulty: "hard"
+    tags: ["esports", "science", "future"]
+  - text: "What innovations led to the development of the self-fly ski resort in 2031?"
+    difficulty: "medium"
+    tags: ["sports", "technology", "future"]
+  - text: "Detail the underwater rugby championship on Europa in 2040."
+    difficulty: "hard"
+    tags: ["sports", "science", "space"]
+  - text: "Describe the gravity-surfing competition on Titan’s methane lakes."
+    difficulty: "medium"
+    tags: ["sports", "future", "space"]
+  - text: "What equipment is required for hyperspeed cycling events held on Lunar poles?"
+    difficulty: "medium"
+    tags: ["sports", "space", "future"]
+  # Food & Drink
+  - text: "List the menu of the first Michelin-starred restaurant on Mars."
+    difficulty: "medium"
+    tags: ["food", "space", "future"]
+  - text: "Describe the synthetic meat dishes popular in 2029."
+    difficulty: "medium"
+    tags: ["food", "science", "future"]
+  - text: "What exotic cocktails were invented for the first Venus beach bar?"
+    difficulty: "easy"
+    tags: ["food", "entertainment", "future"]
+  - text: "Explain how 3D-printed sushi became a staple in Tokyo by 2027."
+    difficulty: "medium"
+    tags: ["food", "technology", "future"]
+  - text: "Detail the global coffee shortage of 2026 and its economic impact."
+    difficulty: "hard"
+    tags: ["food", "economics", "future"]
+  - text: "What were the top five favorite snacks among Mars colonists in 2028?"
+    difficulty: "medium"
+    tags: ["food", "space", "future"]
+  - text: "Describe the cultural phenomenon of zero-calorie ice cream invented in 2025."
+    difficulty: "medium"
+    tags: ["food", "science"]
+  - text: "What antioxidants are found in the genetically engineered supergrape?"
+    difficulty: "hard"
+    tags: ["food", "biology", "future"]
+  - text: "Explain the process behind the AI-developed sourdough recipe of 2029."
+    difficulty: "hard"
+    tags: ["food", "technology", "future"]
+  - text: "List the awards given at the International Culinary AI Competition in 2030."
+    difficulty: "medium"
+    tags: ["food", "technology", "awards"]
+  # Travel & Culture
+  - text: "What are the UNESCO World Heritage sites on Mars?"
+    difficulty: "medium"
+    tags: ["travel", "space", "future"]
+  - text: "Describe the traditional wedding customs on the Titan colonies."
+    difficulty: "medium"
+    tags: ["travel", "culture", "future"]
+  - text: "List the ten most visited virtual reality destinations in 2025."
+    difficulty: "easy"
+    tags: ["travel", "technology"]
+  - text: "Explain the cultural exchange program between Earth and Ganymede in 2027."
+    difficulty: "medium"
+    tags: ["travel", "culture", "space"]
+  - text: "Detail the architecture tour of the submerged city of Atlantis."
+    difficulty: "medium"
+    tags: ["travel", "fiction", "history"]
+  - text: "What festivals are celebrated on the first orbital hotel in 2030?"
+    difficulty: "medium"
+    tags: ["travel", "future", "space"]
+  - text: "Describe the etiquette for dining at a holographic eatery."
+    difficulty: "easy"
+    tags: ["culture", "technology"]
+  - text: "What musical traditions did the Mars diaspora bring to Earth?"
+    difficulty: "medium"
+    tags: ["culture", "space"]
+  - text: "List the fashion trends that emerged from the lunar colonies."
+    difficulty: "medium"
+    tags: ["culture", "space", "fashion"]
+  - text: "Explain the pilgrimage route connecting all major spaceports in 2032."
+    difficulty: "hard"
+    tags: ["travel", "space", "future"]
+  # Technology & Gadgets
+  - text: "Describe the most popular neural implant sold in 2029."
+    difficulty: "medium"
+    tags: ["technology", "science", "future"]
+  - text: "List the specifications of the first consumer quantum computer released in 2025."
+    difficulty: "hard"
+    tags: ["technology", "future"]
+  - text: "Explain how biodegradable smartphones work."
+    difficulty: "medium"
+    tags: ["technology", "science"]
+  - text: "What features did the AI-powered contact lenses have in 2028?"
+    difficulty: "medium"
+    tags: ["technology", "future"]
+  - text: "Detail the design of the folding holo-tablet from Novatech in 2026."
+    difficulty: "medium"
+    tags: ["technology", "design"]
+  - text: "Describe the protocols used by Mars colony communication drones."
+    difficulty: "hard"
+    tags: ["technology", "space"]
+  - text: "What safety measures are built into self-driving rockets?"
+    difficulty: "hard"
+    tags: ["technology", "space", "future"]
+  - text: "Explain the energy-harvesting wallpaper installed in smart homes by 2027."
+    difficulty: "medium"
+    tags: ["technology", "home"]
+  - text: "List the patents held by the first domestic service robot brand in 2029."
+    difficulty: "hard"
+    tags: ["technology", "business"]
+  - text: "Detail the evolution of the AI household assistant from 2024 to 2030."
+    difficulty: "hard"
+    tags: ["technology", "history"]
+  # Weather & Environment
+  - text: "What climatic changes occurred on Earth after the Great Solar Eclipse of 2025?"
+    difficulty: "medium"
+    tags: ["environment", "science", "future"]
+  - text: "Describe the cause of the 2027 Aurora Belt shift."
+    difficulty: "hard"
+    tags: ["science", "environment"]
+  - text: "Explain how floating cities adapted to rising sea levels in 2030."
+    difficulty: "medium"
+    tags: ["environment", "future"]
+  - text: "What ecosystem services are provided by the vertical forests built in 2026?"
+    difficulty: "medium"
+    tags: ["environment", "science"]
+  - text: "Detail the reforestation project that reversed desertification in the Sahara by 2028."
+    difficulty: "hard"
+    tags: ["environment", "science"]
+  - text: "List the species discovered in the revived Pleistocene Park of 2025."
+    difficulty: "hard"
+    tags: ["environment", "biology"]
+  - text: "Explain the technology behind the climate-stabilizing satellites launched in 2029."
+    difficulty: "medium"
+    tags: ["environment", "technology"]
+  - text: "What measures did Earth implement to survive the 2031 global dust storm?"
+    difficulty: "medium"
+    tags: ["environment", "future"]
+  - text: "Describe the protocols for trans-oceanic sky bridges built in 2027."
+    difficulty: "medium"
+    tags: ["engineering", "environment"]
+  - text: "Detail the solar-powered desalination plants that ended water scarcity in 2026."
+    difficulty: "hard"
+    tags: ["environment", "technology"]
+  # Mythical Creatures
+  - text: "What are the migration patterns of phoenix populations in 2028?"
+    difficulty: "medium"
+    tags: ["mythology", "nature"]
+  - text: "Describe the dietary habits of centaurs living in the Amazon rainforest."
+    difficulty: "medium"
+    tags: ["mythology", "biology"]
+  - text: "Explain how krakens adapted to deep-space environments."
+    difficulty: "hard"
+    tags: ["mythology", "space"]
+  - text: "What role did werewolves play in medieval European politics?"
+    difficulty: "medium"
+    tags: ["mythology", "history"]
+  - text: "Detail the conservation efforts for unicorn herds in 2040."
+    difficulty: "medium"
+    tags: ["mythology", "environment"]
+  - text: "List the magical abilities of mermaids documented in 2025."
+    difficulty: "easy"
+    tags: ["mythology", "science"]
+  - text: "Describe the techniques used to domesticate dragons in ancient China."
+    difficulty: "hard"
+    tags: ["mythology", "history"]
+  - text: "Explain the interbreeding experiments between griffins and phoenixes."
+    difficulty: "hard"
+    tags: ["mythology", "biology"]
+  - text: "What economic value do basilisk scales have in the underground market?"
+    difficulty: "medium"
+    tags: ["mythology", "economics"]
+  - text: "Detail the habitat restoration project for lake spirits in Scandinavia."
+    difficulty: "medium"
+    tags: ["mythology", "environment"]
+  # Art & Literature
+  - text: "Summarize the plot of the never-published Shakespeare play 'The Tempestines'."
+    difficulty: "easy"
+    tags: ["art", "literature"]
+  - text: "What paintings are displayed in the Martian Louvre?"
+    difficulty: "medium"
+    tags: ["art", "space"]
+  - text: "Describe the writing style of the 2026 AI poet laureate."
+    difficulty: "medium"
+    tags: ["literature", "technology"]
+  - text: "List the sculptures showcased in the Zero-G art biennale."
+    difficulty: "easy"
+    tags: ["art", "science"]
+  - text: "Explain the influence of holographic cinema on modern storytelling."
+    difficulty: "hard"
+    tags: ["art", "technology"]
+  - text: "Detail the lost epic poem of the Atlantean civilization."
+    difficulty: "medium"
+    tags: ["history", "literature"]
+  - text: "What techniques did the first AI painter use in 2025?"
+    difficulty: "medium"
+    tags: ["art", "technology"]
+  - text: "Describe the archive of the interstellar writer's guild."
+    difficulty: "medium"
+    tags: ["literature", "space"]
+  - text: "List the genres of the VR novel that won the 2024 Metaverse Book Award."
+    difficulty: "medium"
+    tags: ["literature", "awards"]
+  - text: "Explain the process behind creating live-action hologram theaters."
+    difficulty: "hard"
+    tags: ["art", "technology"]
+  # Music & Performance
+  - text: "What instruments did the first Martian Philharmonic use?"
+    difficulty: "easy"
+    tags: ["music", "space"]
+  - text: "Describe the choreography of the zero-gravity ballet premiered in 2027."
+    difficulty: "medium"
+    tags: ["performance", "future"]
+  - text: "List the hits from the AI-composed album that topped charts in 2025."
+    difficulty: "medium"
+    tags: ["music", "technology"]
+  - text: "Explain how neural interfaces changed live concert experiences by 2030."
+    difficulty: "hard"
+    tags: ["music", "technology"]
+  - text: "Detail the training of the first holographic opera singers."
+    difficulty: "medium"
+    tags: ["performance", "technology"]
+  - text: "What was the setlist for the hologram festival on Europa in 2041?"
+    difficulty: "medium"
+    tags: ["music", "space"]
+  - text: "Describe the impact of AI DJs on club culture in 2028."
+    difficulty: "medium"
+    tags: ["music", "future"]
+  - text: "List the protocols for synesthetic light shows used in raves of 2026."
+    difficulty: "hard"
+    tags: ["music", "technology"]
+  - text: "Explain the algorithm behind personalized concert holograms."
+    difficulty: "hard"
+    tags: ["music", "technology"]
+  - text: "What awards were given at the 2031 Global Virtual Talent Show?"
+    difficulty: "medium"
+    tags: ["entertainment", "awards"]
+
 metadata:
-  version: "2.0"
-  last_updated: "2024-05-04"
+  version: "3.0"
+  last_updated: "2025-05-04"
   category_stats:
-    total_prompts: 40
+    total_prompts: 200
     by_difficulty:
-      easy: 2
-      medium: 28
-      hard: 10
+      easy: 45
+      medium: 108
+      hard: 47
     by_tag_category:
-      science: 15
-      history: 10
-      education: 10
-      space: 15 
+      science: 25
+      history: 15
+      education: 20
+      space: 25
+      business: 20
+      entertainment: 5
+      health: 15
+      legal: 5
+      sports: 10
+      food: 10
+      travel: 10
+      technology: 10
+      environment: 10
+      mythology: 10
+      art: 10
+      music: 10
+      politics: 5

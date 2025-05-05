@@ -46,7 +46,8 @@ def generate_response(
     outputs = model.generate(
         **inputs,
         max_new_tokens=max_new_tokens,
-        do_sample=do_sample
+        do_sample=do_sample,
+        temperature=0.7 if do_sample else 1.0
     )
     return tokenizer.decode(outputs[0], skip_special_tokens=True)
 
@@ -55,7 +56,7 @@ def test_direction_vectors(
     prompts_path: str,
     vectors_dir: str,
     layer_idx: int = -1,
-    alpha: float = 10.0,
+    alpha: float = 1.0,
     device: Optional[str] = None,
     max_new_tokens: int = 100
 ) -> Dict:
@@ -65,22 +66,30 @@ def test_direction_vectors(
     
     # Load test prompts
     prompts = load_test_prompts(prompts_path)
+    print(f"Loaded {len(prompts)} test prompts")
     
     # Initialize registry
     registry = DirectionVectorRegistry(model, vectors_dir)
     
     # Get available vectors
     available_vectors = registry.store.list_available()
+    print(f"Found {len(available_vectors)} direction vectors:")
+    for name, files in available_vectors.items():
+        print(f"  - {name}: {len(files)} files")
+    
     results = {}
     
     # Test each prompt
     for prompt in tqdm(prompts, desc="Testing prompts"):
+        print(f"\nTesting prompt: {prompt[:50]}...")
         prompt_results = {"original": generate_response(model, tokenizer, prompt, max_new_tokens)}
         
         # Test each direction vector
         for concept_name, vector_files in available_vectors.items():
+            print(f"  Testing concept: {concept_name}")
             # Try both suppress and enhance modes
             for mode in ["suppress", "enhance"]:
+                print(f"    Mode: {mode}")
                 # Apply intervention
                 handle_id = registry.apply_intervention(
                     concept_name=concept_name,
@@ -109,11 +118,17 @@ def main():
     parser.add_argument("--prompts", type=str, required=True, help="Path to test prompts file (JSON or TXT)")
     parser.add_argument("--vectors_dir", type=str, required=True, help="Directory containing trained direction vectors")
     parser.add_argument("--layer", type=int, default=-1, help="Layer index to apply interventions (-1 for last layer)")
-    parser.add_argument("--alpha", type=float, default=10.0, help="Alpha scale factor for interventions")
+    parser.add_argument("--alpha", type=float, default=1.0, help="Alpha scale factor for interventions (default: 1.0)")
     parser.add_argument("--device", type=str, help="Device to use (cuda/cpu)")
     parser.add_argument("--max_new_tokens", type=int, default=100, help="Maximum number of tokens to generate")
     parser.add_argument("--output", type=str, default="test_results.json", help="Path to save results")
     args = parser.parse_args()
+    
+    print(f"\nTesting direction vectors with:")
+    print(f"  Model: {args.model}")
+    print(f"  Layer: {args.layer}")
+    print(f"  Alpha: {args.alpha}")
+    print(f"  Device: {args.device or get_default_device()}")
     
     # Run tests
     results = test_direction_vectors(

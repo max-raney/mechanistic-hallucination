@@ -48,6 +48,7 @@ class DirectionVectorTrainer:
         layer_idx: int = -1
     ) -> torch.Tensor:
         """Compute direction vector between positive and negative examples."""
+        # Extract activations
         pos_activations = self.extract_activations(positive_prompts, layer_idx)
         neg_activations = self.extract_activations(negative_prompts, layer_idx)
         
@@ -57,8 +58,22 @@ class DirectionVectorTrainer:
         
         # Compute direction vector
         direction = pos_mean - neg_mean
+        
+        # Validate direction vector
+        if direction.norm() < 1e-6:
+            print("Warning: Direction vector has very small norm. The activations may not be well-separated.")
+        
         # Normalize
         direction = direction / direction.norm()
+        
+        # Compute separation score
+        pos_proj = torch.einsum("nd,d->n", pos_activations, direction)
+        neg_proj = torch.einsum("nd,d->n", neg_activations, direction)
+        separation_score = (pos_proj.mean() - neg_proj.mean()).item()
+        
+        print(f"Separation score: {separation_score:.4f}")
+        if abs(separation_score) < 0.1:
+            print("Warning: Low separation between positive and negative examples.")
         
         return direction
     
@@ -71,6 +86,10 @@ class DirectionVectorTrainer:
         metadata: Optional[Dict] = None
     ) -> Path:
         """Train and save a direction vector for a concept."""
+        print(f"\nTraining direction vector for concept: {concept_name}")
+        print(f"Number of positive examples: {len(positive_prompts)}")
+        print(f"Number of negative examples: {len(negative_prompts)}")
+        
         direction = self.compute_direction(positive_prompts, negative_prompts, layer_idx)
         
         # Prepare save path and metadata
@@ -82,12 +101,14 @@ class DirectionVectorTrainer:
                 "layer_idx": layer_idx,
                 "num_positive": len(positive_prompts),
                 "num_negative": len(negative_prompts),
+                "concept_name": concept_name,
                 **(metadata or {})
             }
         }
         
         # Save
         torch.save(save_dict, save_path)
+        print(f"Saved direction vector to: {save_path}")
         return save_path
 
 def train_concept_vectors_from_json(

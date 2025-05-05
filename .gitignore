@@ -26,6 +26,7 @@ models/
 checkpoints/
 # data/
 outputs/
+analysis
 
 # Generated direction vectors and results
 direction_vectors/*.pt
