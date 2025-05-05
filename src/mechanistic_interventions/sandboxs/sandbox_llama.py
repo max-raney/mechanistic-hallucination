@@ -7,7 +7,7 @@ import os
 tk = "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"
 device = "cuda" if torch.cuda.is_available() else "cpu"
 llama_path = "/content/models/meta-llama_Meta-Llama-3-8B"
-prompt_file = "data/clean_prompts.txt"
+prompt_file = "data/clean_prompt.txt"
 
 # Load Model
 def load_llama_model():
